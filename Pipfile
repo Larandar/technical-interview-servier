@@ -8,6 +8,7 @@ drugs = "python -m drugs"
 
 [packages]
 rich_click = "*"
+ndjson = "*"
 
 [dev-packages]
 

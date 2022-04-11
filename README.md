@@ -16,13 +16,33 @@ The project is structured this way:
 | Easy to run in production                  |                            |
 | Lower barrier of entry for non-developper  |                            |
 
-## Options 2: ETL with Dataflow
+### Options 2: ETL with Dataflow
 
 | Pros                      | Cons                                                   |
 |---------------------------|--------------------------------------------------------|
 | Easier for data-wrangling | Harder to implement                                    |
 |                           | Barrier of entry for developper                        |
 |                           | Extreme care must be given to monitoring at all levels |
+
+### Running the datapipeline
+
+```bash
+pipenv run drugs --dataset <dataset> ingest
+pipenv run drugs --dataset <dataset> transform
+```
+
+Notes:
+
+- The `transform` step will extract the drugs_v1 table as NDJSON in a bucket with the same name as
+  the dataset.
+
+### Ad-hoc analysis
+
+```bash
+pipenv run drugs analysis
+```
+
+> Journal with most cited drugs: Journal of emergency nursing
 
 ### Scaling considerations
 
