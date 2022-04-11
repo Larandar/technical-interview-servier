@@ -57,3 +57,33 @@ def bq_query_operator(dataset: str, destination_table: str, query_file: Path):
                 query.read(),
             ],
         )
+
+
+def gs_ensure_bucket_operator(bucket_name: str):
+    """Create a bucket in google storage using the `gsutil` binary.
+
+    Notes:
+    - This treatment would be delegated to Terraform (or any other IaC tool).
+    - This operator use the credentials project by design.
+    """
+    subprocess.run(["gsutil", "mb", f"gs://{bucket_name}"])
+
+
+def bq_extract_operator(dataset: str, table: str, destination_file):
+    """Extract a bigquery table using the `bq` binary.
+
+    Notes:
+    - This treatment would be delegated to a PodOperator that would
+      use the `google/cloud-sdk` image with the configured credentials.
+    - This operator use the credentials project by design.
+    """
+    subprocess.run(
+        [
+            "bq",
+            "extract",
+            f"--dataset_id={dataset}",
+            f"--destination_format=NEWLINE_DELIMITED_JSON",
+            table,
+            destination_file,
+        ]
+    )
