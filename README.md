@@ -35,3 +35,10 @@ For considerations when scaling:
 - SQL queries can be optimized.
 - Maybe an hybrid of the two options (tagging in dataflow + processing in bq) can be more efficient
   but it would need to be benchmarked at scale.
+
+## SQL analysis
+
+The SQL queries are written in the following files:
+
+- `transactions/daily_sales.sql`: daily sales (II.2)
+- `transactions/by_client.sql`: sales by types by client (II.3)
