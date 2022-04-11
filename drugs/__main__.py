@@ -1,34 +1,23 @@
 """Entrypoint for the test, each sub-command represent a part of the subject."""
-from pathlib import Path
 
 import rich_click as click
 
-import drugs.ingest
+from drugs.ingest import ingest_drugs
 
 
 @click.group()
-def do_drugs():
+@click.option("--dataset", default="servier_drugs")
+@click.pass_context
+def do_drugs(ctx, dataset: str):
     """Drugs is a collection of tools for data analysis."""
-    pass
+    ctx.obj = {"dataset": dataset}
 
 
 @do_drugs.command()
-def ingest():
+@click.pass_context
+def ingest(ctx):
     """Ingest files into bigquery."""
-    drugs.ingest.bq_mk_dataset_operator("drugs_raw")
-    drugs.ingest.bq_load_operator(
-        "drugs_raw.drugs_v1", Path("inputs/drugs.csv"), "atcode:STRING,drug:STRING"
-    )
-    drugs.ingest.bq_load_operator(
-        "drugs_raw.clinical_trials_v1",
-        Path("inputs/clinical_trials.csv"),
-        "id:STRING,scientific_title:STRING,date:STRING,journal:STRING",
-    )
-    drugs.ingest.bq_load_operator(
-        "drugs_raw.pubmed_v1",
-        Path("inputs/pubmed.csv"),
-        "id:INTEGER,title:STRING,date:STRING,journal:STRING",
-    )
+    ingest_drugs(ctx.obj["dataset"])
 
 
 if __name__ == "__main__":
