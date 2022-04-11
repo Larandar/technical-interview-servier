@@ -3,6 +3,7 @@
 import rich_click as click
 
 from drugs.ingest import ingest_drugs
+from drugs.transform import transform_drugs
 
 
 @click.group()
@@ -18,6 +19,13 @@ def do_drugs(ctx, dataset: str):
 def ingest(ctx):
     """Ingest files into bigquery."""
     ingest_drugs(ctx.obj["dataset"])
+
+
+@do_drugs.command()
+@click.pass_context
+def transform(ctx):
+    """Process raw drug data for data warehousing."""
+    transform_drugs(ctx.obj["dataset"])
 
 
 if __name__ == "__main__":
