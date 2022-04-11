@@ -22,4 +22,15 @@ def bq_load_operator(table_ref: str, file: Path, schema: str):
       use the `google/cloud-sdk` image with the configured credentials.
     - This operator use the credentials project by design.
     """
-    subprocess.run(["bq", "load", "--source_format=CSV", table_ref, file, schema])
+    subprocess.run(
+        [
+            "bq",
+            "load",
+            "--source_format=CSV",
+            "--skip_leading_rows=1",
+            "--replace",
+            table_ref,
+            file,
+            schema,
+        ]
+    )
